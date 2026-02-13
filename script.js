@@ -1,92 +1,176 @@
-// Mobile menu toggle
-const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-const mobileMenu = document.getElementById('mobile-menu');
-const closeMenuBtn = document.getElementById('close-menu');
+const body = document.body;
+const oceanFloor = document.getElementById('ocean-floor');
+const homeSection = document.getElementById('home-section');
+let fishInterval;
 
-mobileMenuBtn.addEventListener('click', () => {
-    mobileMenu.classList.add('active');
-});
-
-closeMenuBtn.addEventListener('click', () => {
-    mobileMenu.classList.remove('active');
-});
-
-// Close mobile menu when clicking on a link
-const mobileMenuLinks = document.querySelectorAll('#mobile-menu a');
-mobileMenuLinks.forEach(link => {
-    link.addEventListener('click', () => {
-        mobileMenu.classList.remove('active');
-    });
-});
-
-// Smooth scrolling for navigation links
-function scrollToSection(sectionId) {
-    const element = document.getElementById(sectionId);
-    const offset = 80;
-    const elementPosition = element.getBoundingClientRect().top;
-    const offsetPosition = elementPosition + window.pageYOffset - offset;
-
-    window.scrollTo({
-        top: offsetPosition,
-        behavior: 'smooth'
-    });
+// ============================================
+// 1. GENERATE DEKORASI DASAR LAUT
+// ============================================
+function generateFloorDecoration() {
+    // Rumput laut
+    for (let i = 0; i < 50; i++) {
+        let weed = document.createElement('div');
+        weed.classList.add('seaweed');
+        weed.style.left = Math.random() * 100 + '%';
+        let height = 60 + Math.random() * 100;
+        weed.style.height = height + 'px';
+        weed.style.width = (10 + Math.random() * 8) + 'px';
+        weed.style.animationDelay = '-' + (Math.random() * 5) + 's';
+        oceanFloor.appendChild(weed);
+    }
+    
+    // Batu karang
+    for (let i = 0; i < 8; i++) {
+        let rock = document.createElement('div');
+        rock.classList.add('rock');
+        rock.style.left = Math.random() * 95 + '%';
+        let size = 50 + Math.random() * 80;
+        rock.style.width = size * 1.5 + 'px';
+        rock.style.height = size + 'px';
+        oceanFloor.appendChild(rock);
+    }
 }
 
-// Add click handlers to all navigation links
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        const sectionId = this.getAttribute('href').substring(1);
-        scrollToSection(sectionId);
-    });
-});
+// ============================================
+// 2. FUNGSI SPAWN IKAN
+// ============================================
+function spawnFish() {
+    const fishTypes = ['🐠', '🐟', '🐡', '🐢'];
+    const fish = document.createElement('div');
+    fish.classList.add('fish');
+    fish.innerText = fishTypes[Math.floor(Math.random() * fishTypes.length)];
 
-// Fade in animation on scroll
+    // Posisi
+    fish.style.left = '105vw';
+    fish.style.top = (Math.random() * 80 + 10) + 'vh';
+    fish.style.transform = 'scaleX(1)';
+
+    body.appendChild(fish);
+
+    // Animasi
+    let duration = 8000 + Math.random() * 12000;
+
+    let animation = fish.animate([
+        { left: '105vw' },
+        { left: '-150px' }
+    ], {
+        duration: duration,
+        easing: 'linear',
+        fill: 'forwards'
+    });
+
+    animation.onfinish = () => fish.remove();
+}
+
+// ============================================
+// 3. OBSERVER (FIX BUG IKAN HILANG TIBA-TIBA)
+// ============================================
 const observerOptions = {
-    threshold: 0.1,
-    rootMargin: '0px 0px -50px 0px'
+    root: null,
+    threshold: 0.2
 };
 
-const observer = new IntersectionObserver((entries) => {
+const homeObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
-            entry.target.classList.add('visible');
+            // Start spawning
+            if (!fishInterval) {
+                spawnFish();
+                fishInterval = setInterval(spawnFish, 2500);
+            }
+        } else {
+            // STOP spawning BARU, tapi biarkan ikan lama berenang sampai selesai
+            clearInterval(fishInterval);
+            fishInterval = null;
         }
     });
 }, observerOptions);
 
-// Observe all fade-in elements
-document.querySelectorAll('.fade-in').forEach(el => {
-    observer.observe(el);
+homeObserver.observe(homeSection);
+
+// ============================================
+// 4. GELEMBUNG BACKGROUND
+// ============================================
+function spawnBubbleBg() {
+    const bubble = document.createElement('div');
+    bubble.classList.add('bubble-bg');
+    const size = 5 + Math.random() * 30;
+    bubble.style.width = size + 'px';
+    bubble.style.height = size + 'px';
+    bubble.style.left = Math.random() * 100 + 'vw';
+    body.appendChild(bubble);
+    
+    let duration = 5000 + Math.random() * 10000;
+    let animation = bubble.animate([
+        { bottom: '-50px', opacity: 0, transform: 'translateX(0)' },
+        { opacity: 0.6, transform: `translateX(${Math.random() * 50 - 25}px)` },
+        { bottom: '110vh', opacity: 0, transform: 'translateX(0)' }
+    ], { duration: duration, easing: 'ease-out' });
+    
+    animation.onfinish = () => bubble.remove();
+}
+
+// ============================================
+// 5. INISIALISASI SWIPER CAROUSEL
+// ============================================
+document.addEventListener('DOMContentLoaded', function() {
+    // Pastikan Swiper sudah dimuat
+    if (typeof Swiper !== 'undefined') {
+        var projectSwiper = new Swiper(".myProjectSwiper", {
+            slidesPerView: 1,
+            spaceBetween: 30,
+            loop: true,
+            grabCursor: true,
+            effect: "slide", // Bisa diganti "fade" jika ingin efek fade
+            navigation: {
+                nextEl: ".swiper-button-next",
+                prevEl: ".swiper-button-prev",
+            },
+            autoplay: {
+                delay: 4000,
+                disableOnInteraction: false,
+            },
+            // Pengaturan tambahan untuk mobile
+            breakpoints: {
+                // Ketika lebar layar >= 768px
+                768: {
+                    slidesPerView: 1,
+                    spaceBetween: 30
+                },
+                // Ketika lebar layar < 768px (mobile)
+                0: {
+                    slidesPerView: 1,
+                    spaceBetween: 20
+                }
+            }
+        });
+        
+        console.log('Swiper initialized successfully!');
+    } else {
+        console.error('Swiper library not loaded!');
+    }
 });
 
-// Active navigation link
-window.addEventListener('scroll', () => {
-    const sections = document.querySelectorAll('section');
-    const navLinks = document.querySelectorAll('.nav-link');
+// ============================================
+// 6. JALANKAN FUNGSI INISIALISASI
+// ============================================
+generateFloorDecoration();
+setInterval(spawnBubbleBg, 800);
 
-    let current = '';
-    sections.forEach(section => {
-        const sectionTop = section.offsetTop;
-        const sectionHeight = section.clientHeight;
-        if (pageYOffset >= sectionTop - 100) {
-            current = section.getAttribute('id');
+// ============================================
+// 7. SMOOTH SCROLL UNTUK NAVIGASI (OPSIONAL)
+// ============================================
+document.querySelectorAll('nav a').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        const targetId = this.getAttribute('href');
+        const targetSection = document.querySelector(targetId);
+        
+        if (targetSection) {
+            targetSection.scrollIntoView({
+                behavior: 'smooth',
+                block: 'center'
+            });
         }
     });
-
-    navLinks.forEach(link => {
-        link.classList.remove('text-blue-600');
-        if (link.getAttribute('href') === `#${current}`) {
-            link.classList.add('text-blue-600');
-        }
-    });
 });
-
-// Form submission
-document.querySelector('form').addEventListener('submit', function (e) {
-    e.preventDefault();
-    alert('Terima kasih! Pesan Anda telah dikirim.');
-    this.reset();
-});
-
-// gpt

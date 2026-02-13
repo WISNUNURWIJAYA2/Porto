@@ -1,63 +1,672 @@
-       
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap");
 
-        html {
-            scroll-behavior: smooth;
-        }
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  scroll-behavior: smooth;
+}
 
-        .fade-in {
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.6s ease, transform 0.6s ease;
-        }
+body {
+  font-family: "Poppins", sans-serif;
+  color: white;
+  overflow-x: hidden;
+  background: linear-gradient(to bottom, #0288d1 0%, #01579b 40%, #002f6c 100%);
+  min-height: 100vh;
+  position: relative;
+}
 
-        .fade-in.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
+/* --- NAVBAR --- */
+nav {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  background: rgba(255, 255, 255, 0.08);
+  padding: 15px 40px;
+  border-radius: 50px;
+  backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
 
-        .nav-link {
-            position: relative;
-        }
+nav ul {
+  display: flex;
+  gap: 30px;
+  list-style: none;
+}
 
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            bottom: -4px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background-color: #3b82f6;
-            transition: width 0.3s ease;
-        }
+nav a {
+  color: #e1f5fe;
+  text-decoration: none;
+  font-weight: 500;
+  transition: 0.3s;
+  letter-spacing: 1px;
+}
 
-        .nav-link:hover::after {
-            width: 100%;
-        }
+nav a:hover {
+  color: #84fab0;
+  text-shadow: 0 0 15px rgba(132, 250, 176, 0.8);
+}
 
-        .project-card {
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
+/* --- CONTAINER UTAMA --- */
+.container {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 250px;
+  padding: 180px 20px 150px;
+}
 
-        .project-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-        }
+section {
+  min-height: 50vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
-        .skill-item {
-            transition: transform 0.3s ease, background-color 0.3s ease;
-        }
+/* --- BUBBLE CARD (KONTEN) --- */
+.bubble-card {
+  position: relative;
+  width: 350px;
+  height: 350px;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 50px;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.15),
+    rgba(255, 255, 255, 0.02)
+  );
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  box-shadow:
+    inset 20px 20px 60px rgba(0, 0, 0, 0.2),
+    inset -20px -20px 60px rgba(255, 255, 255, 0.1),
+    0 20px 50px rgba(0, 0, 0, 0.5);
+  animation: float 8s ease-in-out infinite;
+  overflow: hidden; /* PENTING: Mencegah konten keluar */
+}
 
-        .skill-item:hover {
-            transform: scale(1.05);
-            background-color: #3b82f6;
-            color: white;
-        }
+/* Style untuk Foto Profil */
+.profile-img {
+  width: 120px;
+  height: 120px;
+  object-fit: contain; /* GANTI dari cover ke contain - foto tidak akan terpotong */
+  object-position: center; /* Posisi foto selalu di tengah */
+  border-radius: 50%;
+  border: 3px solid rgba(255, 255, 255, 0.5);
+  margin-bottom: 15px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  background: rgba(255, 255, 255, 0.9); /* Background putih agar foto terlihat jelas */
+  padding: 5px; /* Padding agar foto tidak mepet ke border */
+}
 
-        .mobile-menu {
-            transform: translateX(100%);
-            transition: transform 0.3s ease;
-        }
+/* Style untuk Subtitle */
+.bubble-card h3 {
+  font-size: 0.9rem;
+  color: #84fab0;
+  letter-spacing: 2px;
+  margin-bottom: 5px;
+  text-transform: uppercase;
+  font-weight: 500;
+}
 
-        .mobile-menu.active {
-            transform: translateX(0);
-        }
+.bubble-card.large {
+  width: 480px;
+  height: 480px;
+}
+
+/* Highlight Gelembung */
+.bubble-card::before {
+  content: "";
+  position: absolute;
+  top: 50px;
+  left: 40px;
+  width: 60px;
+  height: 20px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.5);
+  transform: rotate(-35deg);
+  filter: blur(5px);
+}
+
+h2 {
+  font-size: 2.2rem;
+  margin-bottom: 15px;
+  color: #ffffff;
+  text-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
+}
+
+p {
+  color: #e0f2f1;
+  text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+  font-size: 1.1rem;
+}
+
+.btn {
+  margin-top: 25px;
+  padding: 12px 30px;
+  background: linear-gradient(90deg, #00c6ff, #0072ff);
+  color: white;
+  border-radius: 30px;
+  text-decoration: none;
+  font-weight: bold;
+  box-shadow: 0 10px 20px -10px rgba(0, 198, 255, 0.7);
+  transition: 0.4s;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.btn:hover {
+  transform: translateY(-5px) scale(1.05);
+  box-shadow: 0 15px 30px -5px rgba(0, 114, 255, 0.8);
+  background: linear-gradient(90deg, #0072ff, #00c6ff);
+}
+
+/* --- PROJECT CAROUSEL STYLES --- */
+.bubble-card.large.swiper-container-bubble {
+  width: 500px;
+  height: 500px;
+  padding: 20px 50px;
+}
+
+.myProjectSwiper {
+  width: 100%;
+  height: 350px;
+  overflow: visible; /* Ubah dari hidden agar tombol navigasi terlihat */
+}
+
+.project-link-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-decoration: none;
+  color: white;
+  height: 100%;
+  transition: transform 0.3s ease;
+}
+
+.project-link-card:hover {
+  transform: scale(1.02);
+}
+
+.project-img-wrapper {
+  width: 100%;
+  height: 160px;
+  border-radius: 15px;
+  overflow: hidden;
+  margin-bottom: 15px;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.project-img-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.project-info h3 {
+  font-size: 1.4rem;
+  color: #84fab0;
+  margin-bottom: 8px;
+  text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+}
+
+.project-info p {
+  font-size: 0.95rem;
+  color: #e0f2f1;
+  line-height: 1.4;
+  margin-bottom: 15px;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.tech-icons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  font-size: 2.2rem;
+  margin-top: auto;
+}
+
+/* --- TOMBOL NAVIGASI (PANAH) --- */
+.custom-nav {
+  position: absolute !important;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 50;
+  color: #fff !important;
+  background: rgba(255, 255, 255, 0.15);
+  width: 50px !important;
+  height: 50px !important;
+  border-radius: 50%;
+  backdrop-filter: blur(5px);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  transition: 0.3s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.swiper-button-prev {
+  left: 20px;
+}
+
+.swiper-button-next {
+  right: 20px;
+}
+
+.custom-nav::after {
+  font-size: 1.4rem !important;
+  font-weight: bold;
+  color: white;
+}
+
+.custom-nav:hover {
+  background: #84fab0;
+  border-color: #84fab0;
+  box-shadow: 0 0 20px rgba(132, 250, 176, 0.6);
+}
+
+.custom-nav:hover::after {
+  color: #004e92;
+}
+
+/* --- CONTACT SECTION --- */
+.bubble-card.contact-bubble {
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.bubble-card.contact-bubble h2 {
+  font-size: 1.4rem;
+  margin-bottom: 20px;
+}
+
+.bubble-card.contact-bubble p {
+  display: none;
+}
+
+.contact-links {
+  display: flex;
+  flex-direction: row;
+  gap: 15px;
+  width: auto;
+  max-width: none;
+  justify-content: center;
+}
+
+.contact-item {
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  width: 45px;
+  height: 45px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.15);
+  box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+
+.contact-item span {
+  display: none;
+}
+
+.icon-box {
+  width: auto;
+  height: auto;
+  min-width: auto;
+  background: transparent;
+  border-radius: 0;
+  color: #ffffff;
+  font-size: 1.3rem;
+  transition: transform 0.3s ease;
+}
+
+.contact-item:hover {
+  background: #84fab0;
+  transform: scale(1.1);
+  box-shadow: 0 0 15px rgba(132, 250, 176, 0.5);
+}
+
+.contact-item:hover .icon-box {
+  color: #00334e;
+  transform: rotate(360deg);
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-25px);
+  }
+}
+
+/* --- DEKORASI BACKGROUND --- */
+.ocean-floor-container {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 180px;
+  z-index: 1;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.seaweed {
+  position: absolute;
+  bottom: -20px;
+  width: 12px;
+  background: linear-gradient(to top, #1b5e20, #4caf50);
+  border-radius: 50% 50% 0 0;
+  opacity: 0.7;
+  transform-origin: bottom center;
+  animation: sway 5s ease-in-out infinite alternate;
+  filter: blur(1px);
+}
+
+.seaweed:nth-child(even) {
+  background: linear-gradient(to top, #2e7d32, #66bb6a);
+  animation-duration: 7s;
+  animation-delay: 1s;
+}
+
+.rock {
+  position: absolute;
+  bottom: -10px;
+  background: linear-gradient(to top, #3e2723, #5d4037);
+  border-radius: 60% 70% 10% 10%;
+  z-index: 2;
+  filter: blur(2px);
+  box-shadow: inset 0 -10px 20px rgba(0, 0, 0, 0.5);
+}
+
+.fish {
+  position: fixed;
+  font-size: 2.5rem;
+  opacity: 0.9;
+  filter: drop-shadow(0 5px 8px rgba(0, 0, 0, 0.4));
+  z-index: 5;
+  pointer-events: none;
+  will-change: transform, left;
+}
+
+.bubble-bg {
+  position: fixed;
+  background: radial-gradient(
+    circle at 30% 30%,
+    rgba(255, 255, 255, 0.2),
+    rgba(255, 255, 255, 0.05)
+  );
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  bottom: -50px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+@keyframes sway {
+  0% {
+    transform: rotate(8deg);
+  }
+  100% {
+    transform: rotate(-8deg);
+  }
+}
+
+/* ============================================ */
+/* --- RESPONSIVE MOBILE (PERBAIKAN UTAMA) --- */
+/* ============================================ */
+
+@media (max-width: 768px) {
+  /* Navbar Mobile */
+  nav {
+    padding: 12px 20px;
+    top: 10px;
+  }
+
+  nav ul {
+    gap: 15px;
+  }
+
+  nav a {
+    font-size: 0.85rem;
+  }
+
+  /* Container Mobile */
+  .container {
+    gap: 150px;
+    padding: 120px 15px 100px;
+  }
+
+  /* === BUBBLE HOME SECTION === */
+  .bubble-card {
+    width: 300px;
+    height: 300px;
+    padding: 30px 25px;
+  }
+
+  .profile-img {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 10px;
+    padding: 3px; /* Padding lebih kecil untuk mobile */
+  }
+
+  .bubble-card h3 {
+    font-size: 0.7rem;
+    margin-bottom: 3px;
+  }
+
+  .bubble-card h2 {
+    font-size: 1.5rem;
+    margin-bottom: 8px;
+  }
+
+  .bubble-card p {
+    font-size: 0.85rem;
+  }
+
+  .btn {
+    margin-top: 15px;
+    padding: 10px 25px;
+    font-size: 0.9rem;
+  }
+
+  /* === BUBBLE SKILLS SECTION === */
+  #skills-section .bubble-card {
+    width: 320px;
+    height: 320px;
+    padding: 35px 25px;
+  }
+
+  #skills-section h2 {
+    font-size: 1.6rem;
+    margin-bottom: 15px;
+  }
+
+  #skills-section > .bubble-card > div {
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 12px !important;
+    margin-top: 15px !important;
+  }
+
+  #skills-section img {
+    width: 32px !important;
+    height: 32px !important;
+  }
+
+  /* === BUBBLE PROJECT SECTION (PERBAIKAN KUNCI) === */
+  .bubble-card.large.swiper-container-bubble {
+    width: 340px !important;
+    height: 340px !important;
+    padding: 25px 40px !important;
+    overflow: hidden !important; /* PENTING */
+  }
+
+  .bubble-card.large.swiper-container-bubble h2 {
+    font-size: 1.3rem !important;
+    margin-bottom: 15px !important;
+  }
+
+  /* Swiper Container - FIX OVERFLOW */
+  .myProjectSwiper {
+    height: 250px !important;
+    width: 100% !important;
+    overflow: hidden !important; /* PENTING: Jaga agar tidak keluar bubble */
+  }
+
+  /* Wrapper Swiper */
+  .swiper-wrapper {
+    height: 100% !important;
+  }
+
+  /* Slide Individual */
+  .swiper-slide {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: flex-start !important;
+  }
+
+  /* Card Project */
+  .project-link-card {
+    width: 100%;
+    max-width: 100%;
+    padding: 0 5px; /* Tambah padding agar tidak mepet */
+  }
+
+  /* Gambar Project */
+  .project-img-wrapper {
+    height: 100px !important;
+    margin-bottom: 8px !important;
+    border-radius: 12px !important;
+  }
+
+  /* Info Project */
+  .project-info h3 {
+    font-size: 1rem !important;
+    margin-bottom: 5px !important;
+  }
+
+  .project-info p {
+    font-size: 0.7rem !important;
+    line-height: 1.3 !important;
+    margin-bottom: 8px !important;
+    -webkit-line-clamp: 2 !important; /* Batasi hanya 2 baris */
+  }
+
+  /* Tech Icons */
+  .tech-icons {
+    font-size: 1.3rem !important;
+    gap: 10px !important;
+    margin-top: 5px !important;
+  }
+
+  /* Tombol Navigasi - Sembunyikan di Mobile */
+  .custom-nav {
+    display: none !important;
+  }
+
+  /* === BUBBLE CONTACT SECTION === */
+  .bubble-card.contact-bubble {
+    width: 200px !important;
+    height: 200px !important;
+    padding: 20px !important;
+  }
+
+  .bubble-card.contact-bubble h2 {
+    font-size: 1.2rem !important;
+    margin-bottom: 15px !important;
+  }
+
+  .contact-links {
+    gap: 12px !important;
+  }
+
+  .contact-item {
+    width: 40px !important;
+    height: 40px !important;
+  }
+
+  .icon-box {
+    font-size: 1.1rem !important;
+  }
+}
+
+/* === MOBILE EXTRA SMALL (< 400px) === */
+@media (max-width: 400px) {
+  nav {
+    padding: 10px 15px;
+  }
+
+  nav ul {
+    gap: 10px;
+  }
+
+  nav a {
+    font-size: 0.75rem;
+  }
+
+  .bubble-card {
+    width: 280px;
+    height: 280px;
+  }
+
+  #skills-section .bubble-card {
+    width: 290px;
+    height: 290px;
+  }
+
+  .bubble-card.large.swiper-container-bubble {
+    width: 310px !important;
+    height: 310px !important;
+    padding: 20px 35px !important;
+  }
+
+  .myProjectSwiper {
+    height: 230px !important;
+  }
+
+  .project-img-wrapper {
+    height: 85px !important;
+  }
+
+  .bubble-card.contact-bubble {
+    width: 180px !important;
+    height: 180px !important;
+  }
+
+  .contact-item {
+    width: 35px !important;
+    height: 35px !important;
+  }
+
+  .icon-box {
+    font-size: 1rem !important;
+  }
+}
